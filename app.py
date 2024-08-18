@@ -1,92 +1,45 @@
-import flet as ft
+import tkinter as tk
+from tkinter import messagebox
 
-def main(page: ft.Page):
+def calculate_sum():
+    try:
+        # 入力欄から値を取得し、数値に変換
+        num1 = float(entry1.get())
+        num2 = float(entry2.get())
+        num3 = float(entry3.get())
+        
+        # 数値の合計を計算
+        total = num1 + num2 + num3
+        
+        # 合計をラベルに表示
+        result_label.config(text=f"合計: {total}")
+    except ValueError:
+        # 数値以外の入力があった場合にエラーメッセージを表示
+        messagebox.showerror("エラー", "全ての入力欄に有効な数値を入力してください")
 
-    # /* レイアウト関連 */
-    page.window_width = 450  # 幅
-    page.window_height = 300  # 高さ
-    # page.window_top = 100  # 位置(TOP)
-    # page.window_left = 100  # 位置(LEFT)
-    page.window_always_on_top = True  # ウィンドウを最前面に固定
-    page.update()
+# メインウィンドウの作成
+root = tk.Tk()
+root.title("合計計算アプリ")
 
-    dd = ft.Dropdown(
-        width=100,
-        options=[
-            ft.dropdown.Option("Red"),
-            ft.dropdown.Option("Green"),
-            ft.dropdown.Option("Blue"),
-        ],
-    )
+sv = tk.StringVar()
 
-    page.title = "Flet counter example" # 3.
-    page.vertical_alignment = ft.MainAxisAlignment.CENTER # 4.
+# 入力欄の作成
+entry1 = tk.Entry(root, textvariable=sv)
+entry2 = tk.Entry(root)
+entry3 = tk.Entry(root)
 
-    txt_number = ft.TextField(value="0", text_align=ft.TextAlign.RIGHT, width=100) # 5.
+# 各入力欄を画面に配置
+entry1.pack(padx=10, pady=10, expand=False, fill=tk.BOTH, ipady=0, ipadx=0, side=tk.LEFT)
+entry2.pack(padx=10, pady=10, expand=False, fill=tk.BOTH, ipady=0, ipadx=0, side=tk.LEFT)
+entry3.pack(padx=10, pady=10, expand=False, fill=tk.BOTH, ipady=0, ipadx=0, side=tk.LEFT)
 
-    def minus_click(e): # 6.
-        txt_number.value = str(int(txt_number.value) - 1)
-        page.update()
+# 計算ボタンの作成
+calc_button = tk.Button(root, text="計算", command=calculate_sum)
+calc_button.pack(padx=10, pady=10)
 
-    def plus_click(e): # 6.
-        txt_number.value = str(int(txt_number.value) + 1)
-        page.update()
+# 結果表示用ラベルの作成
+result_label = tk.Label(root, text="合計: ")
+result_label.pack(padx=10, pady=10, fill=tk.BOTH, ipady=0, expand=False)
 
-
-    t = ft.Tabs(
-        selected_index=1,
-        animation_duration=400,
-        tabs=[
-            ft.Tab(
-                text="サーバ接続",
-                content=ft.Container(
-                    content=ft.Text("This is Tab 1"), alignment=ft.alignment.center
-                ),
-            ),
-            ft.Tab(
-                text="フォルダ管理",
-                # tab_content=ft.Icon(ft.icons.FOLDER_OPEN),
-                icon=ft.icons.FOLDER_OPEN,
-                content=ft.Text("This is Tab 2"),
-            ),
-            ft.Tab(
-                text="Tab 3",
-                icon=ft.icons.SETTINGS,
-                content=ft.Row(
-                [
-                    ft.IconButton(ft.icons.REMOVE, on_click=minus_click),
-                    txt_number,
-                    ft.IconButton(ft.icons.ADD, on_click=plus_click),
-                ],
-            alignment=ft.MainAxisAlignment.CENTER,
-        )
-                # content=ft.ElevatedButton(text="Submit")
-            ),
-        ],
-        expand=1,
-    )
-
-
-    # def button_clicked(e):
-    #     t2.value = "recomended!"
-    #     t2.update()
-
-    # b1 = ft.FilledTonalButton(
-    #     text="わたしを推してください",
-    #     icon=ft.icons.RECOMMEND,
-    #     on_click=button_clicked,
-    # )
-
-
-    # async def button_clicked(e):
-    #     t.value = f"Dropdown value is:  {dd.value}"
-    #     await t.update_async()
-
-    # t = ft.Text()
-    # b = ft.ElevatedButton(text="Submit", on_click=button_clicked)
-
-    # t2 = ft.Text()
-    # page.add(b1, t2)
-    page.add(t)
-
-ft.app(target=main)
+# メインループの開始
+root.mainloop()
